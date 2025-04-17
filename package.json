@@ -1,0 +1,23 @@
+{
+    "name": "hello-button",
+    "displayName": "Hello Button",
+    "description": "A simple extension that shows a button in the status bar and says Hello when clicked.",
+    "version": "0.0.1",
+    "publisher": "your-name",
+    "engines": {
+        "vscode": "^1.60.0"
+    },
+    "activationEvents": [
+        "onCommand:hello-button.sayHello"
+    ],
+    "main": "./src/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "hello-button.sayHello",
+                "title": "Say Hello"
+            }
+        ]
+    },
+    "dependencies": {}
+}
