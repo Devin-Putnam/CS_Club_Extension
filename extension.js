@@ -1,18 +1,37 @@
 const vscode = require('vscode');
+const path = require('path');
 
 function activate(context) {
-    // Create a button in the status bar
-    let button = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
-    button.text = "Click Me";  // Text displayed on the button
-    button.command = 'hello-button.sayHello';  // Command to trigger on click
-    button.show();  // Show the button in the status bar
+    let disposable = vscode.commands.registerCommand('html-button.showHtmlButton', function () {
+        const panel = vscode.window.createWebviewPanel(
+            'htmlButton', // Identifies the type of the webview
+            'HTML Button', // Title of the webview panel
+            vscode.ViewColumn.One, // Editor column to show the webview
+            {
+                enableScripts: true, // Allows JavaScript in the webview
+            }
+        );
 
-    // Register the command that will be executed when the button is clicked
-    let disposable = vscode.commands.registerCommand('hello-button.sayHello', function () {
-        vscode.window.showInformationMessage("Hello!");
+        // Get the path to the HTML file
+        const htmlFilePath = path.join(context.extensionPath, 'media', 'index.html');
+
+        // Read the HTML content
+        const htmlContent = vscode.Uri.file(htmlFilePath).with({ scheme: 'vscode-resource' });
+
+        // Set the webview's HTML content
+        panel.webview.html = `<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Hello Webview</title>
+        </head>
+        <body>
+            <iframe src="${htmlContent}" width="100%" height="100%"></iframe>
+        </body>
+        </html>`;
     });
 
-    context.subscriptions.push(button);
     context.subscriptions.push(disposable);
 }
 
